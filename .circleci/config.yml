@@ -2,7 +2,7 @@ version: 2  # Version of CircleCI
 jobs:
   build:
     environment:
-      IMAGE_NAME: 1joe/python-helloWorld:latest
+      IMAGE_NAME: 1joe/python-helloWorld
     docker:
       - image: python:3.8
     steps:
@@ -19,10 +19,10 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - run:
           name: Build Docker image
-          command: docker build -t $IMAGE_NAME .
+          command: docker build -t $IMAGE_NAME:latest .
 
       - run:
           name: Push to Docker Hub
           command: |
              docker login -u 1joe -p ac009a02-da72-47b5-ae05-b7799e4aedbf
-             docker push $IMAGE_NAME
+             docker push $IMAGE_NAME:latest
