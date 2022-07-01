@@ -24,5 +24,5 @@ jobs:
       - run:
           name: Push to Docker Hub
           command: |
-             docker login -u $DOCKER_USER -p $DOCKER_PASS
+             docker login -u 1joe -p ac009a02-da72-47b5-ae05-b7799e4aedbf
              docker push $IMAGE
