@@ -1,31 +1,28 @@
-version: 2.1
+version: 2  # Version of CircleCI
 jobs:
   build:
     environment:
-      IMAGE_NAME: 1joe/python-helloWorld
+      IMAGE_NAME: 1joe/python-helloWorld:latest
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: python:3.8
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker 
+      - run:
+        # installs a docker client that will be used to run the docker commands
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
       - run:
           name: Build Docker image
-          command: | 
-                  docker build -t $IMAGE_NAME:latest .
-                  echo "$DOCKER_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-                  docker push $IMAGE_NAME:latest
-  
-  workflows:
-    build_push_image:
-      jobs:
-        - build
-    daily_update:
-      triggers:
-        - schedule:
-            cron: *****
-            filters:
-              branches:
-                only:
-                  - main
-      jobs:
-        - build
+          command: docker build -t $IMAGE .
+
+      - run:
+          name: Push to Docker Hub
+          command: |
+             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin"
+             docker push $IMAGE
