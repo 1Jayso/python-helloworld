@@ -19,7 +19,7 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - run:
           name: Build Docker image
-          command: docker build -t $IMAGE .
+          command: docker build $IMAGE .
 
       - run:
           name: Push to Docker Hub
